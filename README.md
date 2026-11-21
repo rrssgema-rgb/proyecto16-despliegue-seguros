@@ -1,10 +1,10 @@
-# Proyecto 15 - Servidor MCP de seguros
+﻿# Proyecto 16 - Despliegue cloud de servidor MCP de seguros de vehículos
 
 ## Descripción
 
-Servidor MCP desarrollado en Python para consultar las coberturas de pólizas de automóvil.
+Despliegue de un servidor MCP desarrollado en Python para consultar las coberturas de pólizas de seguros de vehículos.
 
-Utiliza el transporte STDIO y permite conectarse a Claude Code.
+El proyecto parte del servidor MCP desarrollado en el Proyecto 15 y lo adapta para su ejecución mediante HTTP y Docker, preparando su despliegue en la nube.
 
 ## Herramienta disponible
 
@@ -20,54 +20,72 @@ Consulta las coberturas contratadas de una póliza de automóvil.
 - Coberturas.
 - Franquicia.
 
-El servidor valida el formato de entrada y controla las pólizas inexistentes.
+Las pólizas de prueba son ficticias.
 
 ## Tecnologías
 
 - Python 3.14
 - MCP SDK
 - uv
-- Claude Code
-- Transporte STDIO
+- Docker
+- Dockerfile
+- Transporte HTTP (Streamable HTTP)
+- Render (despliegue cloud)
 
-## Instalación
+## Endpoint de comprobación
 
-Desde la carpeta del proyecto:
+El servidor incorpora el endpoint:
 
-```powershell
-python -m pip install uv
-python -m uv sync
-```
+`GET /salud`
 
-## Ejecución
+Devuelve el estado del servidor y las herramientas disponibles.
 
-```powershell
-python -m uv run python server.py
-```
+## Ejecución local
 
-El servidor utiliza STDIO y registra los mensajes de diagnóstico en stderr.
-
-## Conexión con Claude Code
-
-El archivo `.mcp.json` contiene la configuración del servidor MCP para el proyecto.
-
-Para registrar el servidor manualmente:
+Instalar dependencias:
 
 ```powershell
-claude mcp add --scope project mcp-seguros -- python -m uv run python server.py
+py -m uv sync
 ```
 
-## Pruebas realizadas
+Ejecutar mediante HTTP:
 
-| Caso | Resultado |
-|---|---|
-| Consulta de AUTO-1001 | Correcto |
-| Formato incorrecto AUTO-12A4 | Error controlado |
-| Póliza inexistente AUTO-9999 | Error controlado |
+```powershell
+$env:MCP_TRANSPORT="http"
+py -m uv run python server.py
+```
+
+El servidor escucha en el puerto 8000 por defecto.
+
+## Ejecución con Docker
+
+Construir la imagen:
+
+```powershell
+docker build -t mcp-seguros-proyecto16 .
+```
+
+Arrancar el contenedor:
+
+```powershell
+docker run -d --name mcp-seguros-p16 -p 8000:8000 mcp-seguros-proyecto16
+```
+
+Comprobar el endpoint:
+
+```powershell
+Invoke-RestMethod http://localhost:8000/salud
+```
+
+Consultar los registros:
+
+```powershell
+docker logs mcp-seguros-p16
+```
 
 ## Evidencias
 
-La carpeta `evidencias/` contiene la captura de Claude Code utilizando la herramienta MCP.
+La carpeta `evidencias/` contiene capturas de las pruebas de funcionamiento HTTP y Docker, así como de la construcción y ejecución del contenedor.
 
 ## Datos de prueba
 
