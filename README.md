@@ -90,3 +90,37 @@ La carpeta `evidencias/` contiene capturas de las pruebas de funcionamiento HTTP
 ## Datos de prueba
 
 Las pólizas utilizadas son ficticias y están definidas en `server.py`.
+
+## Despliegue en Render
+
+El servidor MCP está desplegado públicamente en Render.
+
+**URL del servicio:**
+
+https://proyecto16-despliegue-seguros.onrender.com
+
+**Endpoint de comprobación:**
+
+https://proyecto16-despliegue-seguros.onrender.com/salud
+
+**Endpoint MCP Streamable HTTP:**
+
+https://proyecto16-despliegue-seguros.onrender.com/mcp
+
+## Prueba MCP remota
+
+El archivo `prueba_mcp_remoto.py` permite conectar con el servidor desplegado, listar las herramientas disponibles y ejecutar una consulta de cobertura.
+
+Se ha comprobado la consulta de la póliza ficticia `AUTO-1001`, obteniendo correctamente sus coberturas y franquicia.
+
+Para ejecutar la prueba:
+
+```powershell
+py -m uv run python prueba_mcp_remoto.py
+```
+
+## Evidencias del despliegue
+
+- `evidencia_07_render_deploy_succeeded.png`: despliegue satisfactorio en Render.
+- `evidencia_08_render_healthcheck.png`: respuesta del endpoint público.
+- `evidencia_09_mcp_consulta_remota.png`: ejecución de la herramienta MCP desde el cliente remoto.
